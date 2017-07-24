@@ -169,7 +169,7 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, ge
             for (var key in strings) {
                 var val = strings[key];
 
-                if (isHTMLModified) {
+                if (isHTMLModified && key.indexOf('<') > -1) {
                     // Use the DOM engine to render any HTML in the key (#131).
                     key = angular.element('<span>' + key + '</span>').html();
                 }
