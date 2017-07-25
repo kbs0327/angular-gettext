@@ -72,6 +72,7 @@ angular.module('gettext').factory('gettextCatalog', ["gettextPlurals", "gettextF
     // IE9, IE10 and IE11 reorders the attributes of tags.
     var test = '<span id="test" title="test" class="tested">test</span>';
     var isHTMLModified = (angular.element('<span>' + test + '</span>').html() !== test);
+    var convertKeyMap = {};
 
     var prefixDebug = function (string) {
         if (catalog.debug && catalog.currentLanguage !== catalog.baseLanguage) {
@@ -88,8 +89,6 @@ angular.module('gettext').factory('gettextCatalog', ["gettextPlurals", "gettextF
             return string;
         }
     };
-
-    var convertKeyMap = {};
 
     function broadcastUpdated() {
         /**
