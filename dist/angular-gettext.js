@@ -89,6 +89,8 @@ angular.module('gettext').factory('gettextCatalog', ["gettextPlurals", "gettextF
         }
     };
 
+    var convertKeyMap = {};
+
     function broadcastUpdated() {
         /**
          * @ngdoc event
@@ -223,7 +225,8 @@ angular.module('gettext').factory('gettextCatalog', ["gettextPlurals", "gettextF
 
                 if (isHTMLModified && key.indexOf('<') > -1) {
                     // Use the DOM engine to render any HTML in the key (#131).
-                    key = angular.element('<span>' + key + '</span>').html();
+                    key = convertKeyMap[key] || angular.element('<span>' + key + '</span>').html();
+                    convertKeyMap[key] = key;
                 }
 
                 if (angular.isString(val) || angular.isArray(val)) {
