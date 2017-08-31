@@ -19,7 +19,6 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, ge
     // the string in the `po` files.
     // IE9, IE10 and IE11 reorders the attributes of tags.
     var test = '<span id="test" title="test" class="tested">test</span>';
-    var isHTMLModified = (angular.element('<span>' + test + '</span>').html() !== test);
     var convertKeyMap = {};
 
     var prefixDebug = function (string) {
@@ -49,6 +48,8 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, ge
     }
 
     catalog = {
+        isHTMLModified: (angular.element('<span>' + test + '</span>').html() !== test),
+
         /**
          * @ngdoc property
          * @name gettextCatalog#debug
@@ -170,7 +171,7 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, ge
             for (var key in strings) {
                 var val = strings[key];
 
-                if (isHTMLModified && key.indexOf('<') > -1) {
+                if (this.isHTMLModified && key.indexOf('<') > -1) {
                     // Use the DOM engine to render any HTML in the key (#131).
                     key = convertKeyMap[key] || angular.element('<span>' + key + '</span>').html();
                     convertKeyMap[key] = key;
