@@ -173,8 +173,9 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, ge
 
                 if (this.isHTMLModified && key.indexOf('<') > -1) {
                     // Use the DOM engine to render any HTML in the key (#131).
-                    key = convertKeyMap[key] || angular.element('<span>' + key + '</span>').html();
-                    convertKeyMap[key] = key;
+	                var oldKey = key;
+	                key = convertKeyMap[oldKey] || angular.element('<span>' + oldKey + '</span>').html();
+	                convertKeyMap[oldKey] = key;
                 }
 
                 if (angular.isString(val) || angular.isArray(val)) {
@@ -247,6 +248,8 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, ge
             var fallbackLanguage = gettextFallbackLanguage(this.currentLanguage);
             string = this.getStringFormFor(this.currentLanguage, string, 1, context) ||
                      this.getStringFormFor(fallbackLanguage, string, 1, context) ||
+                     this.getStringFormFor(this.currentLanguage, convertKeyMap[string], 1, context) ||
+                     this.getStringFormFor(fallbackLanguage, convertKeyMap[string], 1, context)||
                      prefixDebug(string);
             string = scope ? $interpolate(string)(scope) : string;
             return addTranslatedMarkers(string);
